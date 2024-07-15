@@ -5,38 +5,77 @@ import java.util.Objects;
 
 public class BankAccount implements Serializable {
 
-    private int accountNumber;
-    private final int routingNumber = 123456789;
+    private String accountOwner;
+
     private double balance;
 
-    public BankAccount() {}
+    private int accountId;
 
-    public BankAccount(int accountNumber, double balance) {
-        this.accountNumber = accountNumber;
+    public BankAccount() {
+    }
+
+    public BankAccount(String accountOwner) {
+        this.accountOwner = accountOwner;
+    }
+    public BankAccount(int accountId) {
+        this.accountId = accountId;
+    }
+    public BankAccount(String accountOwner, double balance, int accountId) {
+        this.accountOwner = accountOwner;
         this.balance = balance;
+        this.accountId = accountId;
 
     }
 
-    public int getAccountNumber() {
-        return accountNumber;
+    public BankAccount(int accountId, double balance) {
+        this.accountId = accountId;
+        this.balance = balance;
     }
 
-    public int getRoutingNumber() {
-        return routingNumber;
+    public BankAccount(int accountId, String accountOwner) {
+        this.accountId = accountId;
+        this.accountOwner = accountOwner;
+    }
+
+    public BankAccount(String accountOwner, double balance) {
+        this.accountOwner = accountOwner;
+        this.balance = balance;
+    }
+
+    public String getAccountOwner() {
+        return accountOwner;
+
+    }
+
+    public void setAccountOwner(String accountOwner) {
+        this.accountOwner = accountOwner;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public double getBalance() {
         return balance;
     }
 
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public int getAccountID() {
+        return accountId;
+    }
+
     public double deposit(double amount) {
-        return balance += amount;
+        balance += amount;
+        return balance;
     }
 
     public double withdraw(double amount) {
         if ((balance - amount) >= 0) {
             balance -= amount;
-            return  balance;
+            return balance;
         }
         return 0;
     }
@@ -46,19 +85,18 @@ public class BankAccount implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BankAccount that = (BankAccount) o;
-        return accountNumber == that.accountNumber && routingNumber == that.routingNumber && Double.compare(balance, that.balance) == 0;
+        return Double.compare(balance, that.balance) == 0 && Objects.equals(accountOwner, that.accountOwner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, routingNumber, balance);
+        return Objects.hash(accountOwner, balance);
     }
 
     @Override
     public String toString() {
-        return "BankAccount {" +
-                "accountNumber =" + accountNumber +
-                ", routingNumber =" + routingNumber +
+        return "BankAccount{" +
+                "accountOwner='" + accountOwner + '\'' +
                 ", balance=" + balance +
                 '}';
     }

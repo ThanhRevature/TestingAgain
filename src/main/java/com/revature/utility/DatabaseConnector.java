@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DatabaseConnector {
 
     public static Connection createConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:src/main/resources/newBankProjectData.db");
+        return DriverManager.getConnection("jdbc:sqlite:src/main/resources/newBankProjectData");
 
     }
 
