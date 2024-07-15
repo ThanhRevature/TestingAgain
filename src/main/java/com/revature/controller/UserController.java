@@ -17,7 +17,7 @@ public class UserController {
     private Scanner scanner;
     private UserService userService;
     private BankAccountService bankAccountService;
-    private Map<String, String> controlMap;
+//    private Map<String, String> controlMap;
 
     public UserController(Scanner scanner, UserService userService, BankAccountService bankAccountService) {
         this.scanner = scanner;
@@ -58,15 +58,16 @@ public class UserController {
                 deleteBankAccount(controlMap);
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("\n Bank Account was deleted \n");
+                promptBankingMenu(controlMap);
                 break;
             case "w" :
                 System.out.println("You did not delete your bank account");
                 break;
 
-            default:
-                System.out.println("GoodBye!");
-                controlMap.put("Continue Loop", "false");
-                break;
+//            default:
+//                System.out.println("GoodBye!");
+//                controlMap.put("Continue Loop", "false");
+//                break;
         }
     }
 
@@ -127,12 +128,12 @@ public class UserController {
             String userAction = scanner.nextLine();
             switch (userAction) {
                 case "1":
-                    registerUser();
+                    registerUser(controlMap);
                     break;
 
                 case "2":
                     controlMap.put("User", login().getUsername());
-                    System.out.printf("\nBanking stuff for %s can happen here!\n\n", controlMap.get("User"));
+/*                    System.out.printf("\nBanking stuff for %s can happen here!\n\n", controlMap.get("User"));*/
                     printOutAllUserAccount(controlMap);
                     System.out.println("c. Create a Bank Account");
                     System.out.println("d. Delete a Bank Account");
@@ -178,25 +179,33 @@ public class UserController {
                             logout(controlMap);
                     }
 
-//                    promptBankingMenu(controlMap);
-                    break;
+                    promptBankingMenu(controlMap);
+//                    break;
 
                 case "q":
                     System.out.println("GoodBye!");
                     controlMap.put("Continue Loop", "false");
+                default:
+                    if ((controlMap.get("User") != null)) {
+                        promptBankingMenu(controlMap);
+                    } else {
+                        System.out.println("\nYou have not clicked a optioned\n");
+                    }
+
             }
         } catch (LoginFail e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void registerUser() {
+    public void registerUser(Map<String, String>controlMap) {
         try {
             User newCredentials = getUserCredentials();
             User newUser = userService.validate(newCredentials);
             System.out.printf("New account created:  %s  \n", newUser);
         } catch (ValidateFail e) {
             System.out.println("Sorry Username has already taken. Please try again \n");
+            promptUserForService(controlMap);
         }
     }
 
@@ -237,7 +246,7 @@ public class UserController {
                 System.out.println("Failed to withdraw");
             }
         } else {
-            System.out.println("You can not withdraw more than what you have poor boy");
+            System.out.println("You can not withdraw more than you have in your account");
         }
     }
 
@@ -245,8 +254,9 @@ public class UserController {
     public void printOutAllUserAccount(Map<String, String> controlMap) {
         String username = controlMap.get("User");
         List<BankAccount> allAccounts = bankAccountService.getAllUserBankAccount(username);
+        System.out.println("\nAll of your bank accounts located here: ");
         for (BankAccount account : allAccounts) {
-            System.out.println("\nAll of your bank accounts located here: ");
+
             System.out.printf("Account ID: %d has Balance of: %.2f \n", account.getAccountID(), account.getBalance());
             System.out.println();
         }
@@ -275,6 +285,7 @@ public class UserController {
         controlMap.remove("User");
         System.out.println("\nYou have logged out\n");
         System.out.println("--------------------------------------------------------------------------");
+        promptUserForService(controlMap);
     }
 
 
