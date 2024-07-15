@@ -36,41 +36,43 @@ public class UserController {
                 createBankAccount(controlMap);
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("\nBank Account created\n");
+                promptBankingMenu(controlMap);
                 break;
             case "n" :
                 System.out.println("You did not make Bank Account");
-            default:
-                if ((controlMap.get("User") != null)) {
-                    promptBankingMenu(controlMap);
-                } else {
-                    System.out.println("\nYou have not clicked a optioned\n");
-                }
+//            default:
+//                if ((controlMap.get("User") != null)) {
+//                    promptBankingMenu(controlMap);
+//                } else {
+//                    System.out.println("\nYou have not clicked a optioned\n");
+//                }
         }
     }
 
     public void promptBankAccountDeletion(Map<String, String> controlMap) {
         printOutAllUserAccount(controlMap);
-        System.out.println("Are you sure you want to delete your account?");
         System.out.println("c. Confirm Deletion");
         System.out.println("w. No, I want to keep my account");
+        System.out.print("Are you sure you want to delete your account? ");
+
         String user = scanner.nextLine();
         switch (user) {
             case "c":
                 deleteBankAccount(controlMap);
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("\n Bank Account was deleted \n");
-//                promptBankingMenu(controlMap);
+                promptBankingMenu(controlMap);
                 break;
             case "w" :
                 System.out.println("You did not delete your bank account");
-                break;
 
-            default:
-                if ((controlMap.get("User") != null)) {
-                    promptBankingMenu(controlMap);
-                } else {
-                    System.out.println("\nYou have not clicked a optioned\n");
-                }
+//
+//            default:
+//                if ((controlMap.get("User") != null)) {
+//                    promptBankingMenu(controlMap);
+//                } else {
+//                    System.out.println("\nYou have not clicked a optioned\n");
+//                }
         }
     }
 
@@ -94,6 +96,7 @@ public class UserController {
             case "d":
 //                            printOutAllUserAccount(controlMap);
                 promptBankAccountDeletion(controlMap);
+//                promptBankingMenu(controlMap);
                 break;
 
             case "m":
@@ -120,12 +123,12 @@ public class UserController {
             case "o":
                 logout(controlMap);
                 promptUserForService(controlMap);
-            default:
-                if ((controlMap.get("User") != null)) {
-                    promptBankingMenu(controlMap);
-                } else {
-                    System.out.println("\nYou have not clicked a optioned\n");
-                }
+//            default:
+//                if ((controlMap.get("User") != null)) {
+//                    promptBankingMenu(controlMap);
+//                } else {
+//                    System.out.println("\nYou have not clicked a optioned\n");
+//                }
         }
     }
 
@@ -145,7 +148,7 @@ public class UserController {
 
                 case "2":
                     controlMap.put("User", login().getUsername());
-/*                    System.out.printf("\nBanking stuff for %s can happen here!\n\n", controlMap.get("User"));*/
+                    /*                    System.out.printf("\nBanking stuff for %s can happen here!\n\n", controlMap.get("User"));*/
                     printOutAllUserAccount(controlMap);
                     System.out.println("c. Create a Bank Account");
                     System.out.println("d. Delete a Bank Account");
@@ -191,20 +194,23 @@ public class UserController {
 
                         case "o":
                             logout(controlMap);
+
                     }
 
-                    promptBankingMenu(controlMap);
+//                    promptBankingMenu(controlMap);
 //                    break;
 
                 case "q":
-                    System.out.println("GoodBye!321321321");
+                    System.out.println("GoodBye!");
                     controlMap.put("Continue Loop", "false");
+                    break;
                 default:
                     if ((controlMap.get("User") != null)) {
                         promptBankingMenu(controlMap);
-                    } else {
-                        System.out.println("\nYou have not clicked a optioned\n");
                     }
+//                    else {
+//                        System.out.println("\nYou have not clicked a optioned\n");
+//                    }
 
             }
         } catch (LoginFail e) {
@@ -279,8 +285,9 @@ public class UserController {
 
     public void deleteBankAccount(Map<String, String> controlMap) {
         String username = controlMap.get("User");
-        System.out.println("What is the Account ID you are trying to delete");
+        System.out.print("What is the Account ID you are trying to delete: ");
         int account_id = scanner.nextInt();
+        scanner.nextLine();
         try {
             bankAccountService.deleteBankAccount(account_id, username);
 
@@ -299,7 +306,7 @@ public class UserController {
         controlMap.remove("User");
         System.out.println("\nYou have logged out\n");
         System.out.println("--------------------------------------------------------------------------");
-        promptUserForService(controlMap);
+//        promptUserForService(controlMap);
     }
 
 
