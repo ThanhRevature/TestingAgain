@@ -39,11 +39,12 @@ public class UserController {
                 break;
             case "n" :
                 System.out.println("You did not make Bank Account");
-                break;
             default:
-                System.out.println("GoodBye!");
-                controlMap.put("Continue Loop", "false");
-                break;
+                if ((controlMap.get("User") != null)) {
+                    promptBankingMenu(controlMap);
+                } else {
+                    System.out.println("\nYou have not clicked a optioned\n");
+                }
         }
     }
 
@@ -58,28 +59,30 @@ public class UserController {
                 deleteBankAccount(controlMap);
                 System.out.println("--------------------------------------------------------------------------");
                 System.out.println("\n Bank Account was deleted \n");
-                promptBankingMenu(controlMap);
+//                promptBankingMenu(controlMap);
                 break;
             case "w" :
                 System.out.println("You did not delete your bank account");
                 break;
 
-//            default:
-//                System.out.println("GoodBye!");
-//                controlMap.put("Continue Loop", "false");
-//                break;
+            default:
+                if ((controlMap.get("User") != null)) {
+                    promptBankingMenu(controlMap);
+                } else {
+                    System.out.println("\nYou have not clicked a optioned\n");
+                }
         }
     }
 
     public void promptBankingMenu(Map<String, String> controlMap) {
-        System.out.printf("\nBanking stuff for %s can happen here!\n\n", controlMap.get("User"));
+//        System.out.printf("\nBanking stuff for %s can happen here!\n\n", controlMap.get("User"));
         printOutAllUserAccount(controlMap);
         System.out.println("c. Create a Bank Account");
         System.out.println("d. Delete a Bank Account");
         System.out.println("m. Deposit");
         System.out.println("w. Withdraw");
         System.out.println("o. Logout");
-        System.out.println("Would would you like to do?");
+        System.out.print("Would would you like to do? ");
         String userAction2 = scanner.nextLine();
         switch (userAction2) {
             case "c":
@@ -101,6 +104,7 @@ public class UserController {
                 int accountId = scanner.nextInt();
                 scanner.nextLine();
                 deposit(accountId, deposit);
+                promptBankingMenu(controlMap);
                 break;
 
             case "w":
@@ -111,9 +115,17 @@ public class UserController {
                 int accountId2 = scanner.nextInt();
                 scanner.nextLine();
                 withdraw(accountId2, withdraw);
+                promptBankingMenu(controlMap);
                 break;
             case "o":
                 logout(controlMap);
+                promptUserForService(controlMap);
+            default:
+                if ((controlMap.get("User") != null)) {
+                    promptBankingMenu(controlMap);
+                } else {
+                    System.out.println("\nYou have not clicked a optioned\n");
+                }
         }
     }
 
@@ -157,12 +169,14 @@ public class UserController {
 
                         case "m":
                             printOutAllUserAccount(controlMap);
+//                            promptBankingMenu(controlMap);
                             System.out.print("Deposit amount: ");
                             double deposit = scanner.nextDouble();
                             System.out.print("Account ID: ");
                             int accountId = scanner.nextInt();
                             scanner.nextLine();
                             deposit(accountId, deposit);
+                            promptBankingMenu(controlMap);
                             break;
 
                         case "w":
@@ -183,7 +197,7 @@ public class UserController {
 //                    break;
 
                 case "q":
-                    System.out.println("GoodBye!");
+                    System.out.println("GoodBye!321321321");
                     controlMap.put("Continue Loop", "false");
                 default:
                     if ((controlMap.get("User") != null)) {
